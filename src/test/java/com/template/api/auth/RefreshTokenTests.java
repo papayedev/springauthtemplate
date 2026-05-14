@@ -1,9 +1,9 @@
 package com.template.api.auth;
 
 import com.template.api.UnitTests;
-import com.template.api.auth.application.usecases.RefreshTokenCommand;
-import com.template.api.auth.application.usecases.RefreshTokenCommandHandler;
-import com.template.api.auth.domain.exceptions.UnauthorizedException;
+import com.template.api.application.usecases.auth.RefreshTokenCommand;
+import com.template.api.application.usecases.auth.RefreshTokenCommandHandler;
+import com.template.api.domain.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ public class RefreshTokenTests extends UnitTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        createFakeUser();
+        createFakeUser("1");
         activateUser();
     }
 

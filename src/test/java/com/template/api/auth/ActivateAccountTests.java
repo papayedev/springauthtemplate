@@ -1,12 +1,12 @@
 package com.template.api.auth;
 
 import com.template.api.UnitTests;
-import com.template.api.auth.application.usecases.ActivateAccountCommand;
-import com.template.api.auth.application.usecases.ActivateAccountCommandHandler;
-import com.template.api.auth.domain.exceptions.BadRequestException;
-import com.template.api.auth.domain.exceptions.ForbiddenException;
-import com.template.api.auth.domain.exceptions.NotFoundException;
-import com.template.api.auth.domain.exceptions.UnauthorizedException;
+import com.template.api.application.usecases.auth.ActivateAccountCommand;
+import com.template.api.application.usecases.auth.ActivateAccountCommandHandler;
+import com.template.api.domain.exceptions.BadRequestException;
+import com.template.api.domain.exceptions.ForbiddenException;
+import com.template.api.domain.exceptions.NotFoundException;
+import com.template.api.domain.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class ActivateAccountTests extends UnitTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        var user = createFakeUser();
+        var user = createFakeUser("1");
         code = user.getVerificationCode();
     }
 
@@ -74,7 +74,7 @@ public class ActivateAccountTests extends UnitTests {
             var command = new ActivateAccountCommand("already@example.fr", code);
             var handler = createHandler();
             var exception = assertThrows(UnauthorizedException.class, () -> handler.handle(command));
-            assertEquals("You are not authorized to perform this action", exception.getMessage());
+            assertEquals("Verification code is expired", exception.getMessage());
         }
     }
 }

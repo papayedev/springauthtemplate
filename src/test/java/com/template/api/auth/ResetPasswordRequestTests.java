@@ -1,10 +1,10 @@
 package com.template.api.auth;
 
 import com.template.api.UnitTests;
-import com.template.api.auth.application.usecases.ResetPasswordRequestCommand;
-import com.template.api.auth.application.usecases.ResetPasswordRequestCommandHandler;
-import com.template.api.auth.domain.exceptions.ForbiddenException;
-import com.template.api.auth.domain.exceptions.NotFoundException;
+import com.template.api.application.usecases.auth.ResetPasswordRequestCommand;
+import com.template.api.application.usecases.auth.ResetPasswordRequestCommandHandler;
+import com.template.api.domain.exceptions.ForbiddenException;
+import com.template.api.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class ResetPasswordRequestTests extends UnitTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        createFakeUser();
+        createFakeUser("1");
     }
 
     private ResetPasswordRequestCommandHandler createHandler() {

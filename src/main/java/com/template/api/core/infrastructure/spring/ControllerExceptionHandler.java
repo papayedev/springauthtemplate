@@ -1,10 +1,10 @@
 package com.template.api.core.infrastructure.spring;
 
-import com.template.api.auth.domain.exceptions.UnauthorizedException;
+import com.template.api.domain.exceptions.UnauthorizedException;
 import com.template.api.core.application.ports.APILogger;
-import com.template.api.auth.domain.exceptions.BadRequestException;
-import com.template.api.auth.domain.exceptions.ForbiddenException;
-import com.template.api.auth.domain.exceptions.NotFoundException;
+import com.template.api.domain.exceptions.BadRequestException;
+import com.template.api.domain.exceptions.ForbiddenException;
+import com.template.api.domain.exceptions.NotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;

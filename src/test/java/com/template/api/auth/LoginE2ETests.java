@@ -1,8 +1,8 @@
 package com.template.api.auth;
 
 import com.template.api.IntegrationTests;
-import com.template.api.auth.domain.viewmodel.LoggedInUserViewModel;
-import com.template.api.auth.presentation.dto.LoginDTO;
+import com.template.api.domain.viewmodel.LoggedInUserViewModel;
+import com.template.api.presentation.dto.LoginDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ public class LoginE2ETests extends IntegrationTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        createFakeUser();
+        createFakeUser("1");
     }
 
     @Nested

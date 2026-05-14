@@ -1,8 +1,8 @@
 package com.template.api.auth;
 
 import com.template.api.IntegrationTests;
-import com.template.api.auth.domain.viewmodel.AccessTokenViewModel;
-import com.template.api.auth.presentation.dto.RefreshTokenDTO;
+import com.template.api.domain.viewmodel.AccessTokenViewModel;
+import com.template.api.presentation.dto.RefreshTokenDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ public class RefreshTokenE2ETests extends IntegrationTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        createFakeUser();
+        createFakeUser("1");
         activateUser();
     }
 

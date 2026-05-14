@@ -1,6 +1,7 @@
 package com.template.api.auth.model;
 
-import com.template.api.auth.domain.model.User;
+import com.template.api.domain.model.User;
+import com.template.api.domain.valueobject.Role;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -21,10 +22,11 @@ class UserTests {
         void shouldCreateUserWithValidData() {
             var id = UUID.randomUUID().toString();
 
-            var user = new User(id, VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(id, VALID_EMAIL, VALID_PASSWORD, Role.USER);
 
             assertEquals(id, user.getId());
             assertEquals(VALID_EMAIL, user.getEmailAddress());
+            assertTrue(user.isUser());
             assertFalse(user.isActive());
             assertNull(user.getVerificationCode());
             assertNull(user.getVerificationCodeExpirationDate());
@@ -35,7 +37,7 @@ class UserTests {
             var id = UUID.randomUUID().toString();
 
             assertThrows(IllegalArgumentException.class, () ->
-                    new User(id, "invalid-email", VALID_PASSWORD)
+                    new User(id, "invalid-email", VALID_PASSWORD, Role.USER)
             );
         }
 
@@ -44,7 +46,7 @@ class UserTests {
             var id = UUID.randomUUID().toString();
 
             assertThrows(IllegalArgumentException.class, () ->
-                    new User(id, VALID_EMAIL, "weak")
+                    new User(id, VALID_EMAIL, "weak", Role.USER)
             );
         }
     }
@@ -63,7 +65,8 @@ class UserTests {
                     HASHED_PASSWORD,
                     verificationCode,
                     expirationDate,
-                    true
+                    true,
+                    Role.USER
             );
 
             assertEquals(id, user.getId());
@@ -84,7 +87,8 @@ class UserTests {
                     HASHED_PASSWORD,
                     null,
                     null,
-                    false
+                    false,
+                    Role.USER
             );
 
             assertNull(user.getVerificationCode());
@@ -97,14 +101,14 @@ class UserTests {
     class ActiveStatus {
         @Test
         void shouldBeInactiveByDefault() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
 
             assertFalse(user.isActive());
         }
 
         @Test
         void shouldMakeUserActive() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
 
             user.makeActive();
 
@@ -113,7 +117,7 @@ class UserTests {
 
         @Test
         void shouldMakeUserInactive() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
             user.makeActive();
 
             user.makeInactive();
@@ -126,7 +130,7 @@ class UserTests {
     class VerificationCode {
         @Test
         void shouldCreateVerificationCodeWithExpiration() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
 
             user.createVerificationCode(15);
 
@@ -138,7 +142,7 @@ class UserTests {
 
         @Test
         void shouldResetVerificationCode() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
             user.createVerificationCode(15);
 
             user.resetVerificationCode();
@@ -149,7 +153,7 @@ class UserTests {
 
         @Test
         void shouldClearVerificationCodeAndExpiration() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
             user.createVerificationCode(15);
 
             user.clearVerificationCode();
@@ -160,7 +164,7 @@ class UserTests {
 
         @Test
         void shouldUpdateVerificationCodeExpirationDate() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
             var beforeUpdate = LocalDateTime.now();
 
             user.updateVerificationCodeExpirationDate(30);
@@ -175,7 +179,7 @@ class UserTests {
     class VerificationCodeExpiration {
         @Test
         void shouldBeExpiredWhenExpirationDateIsNull() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
 
             assertTrue(user.isVerificationCodeExpired());
         }
@@ -188,7 +192,8 @@ class UserTests {
                     HASHED_PASSWORD,
                     "12345",
                     LocalDateTime.now().minusMinutes(1),
-                    false
+                    false,
+                    Role.USER
             );
 
             assertTrue(user.isVerificationCodeExpired());
@@ -202,7 +207,8 @@ class UserTests {
                     HASHED_PASSWORD,
                     "12345",
                     LocalDateTime.now().plusMinutes(10),
-                    false
+                    false,
+                    Role.USER
             );
 
             assertFalse(user.isVerificationCodeExpired());
@@ -213,7 +219,7 @@ class UserTests {
     class PasswordManagement {
         @Test
         void shouldResetPasswordAndClearVerificationCode() {
-            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD);
+            var user = new User(UUID.randomUUID().toString(), VALID_EMAIL, VALID_PASSWORD, Role.USER);
             user.createVerificationCode(15);
             var newHashedPassword = "$2a$10$newhash";
 

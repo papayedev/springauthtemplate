@@ -1,8 +1,8 @@
 package com.template.api.auth;
 
 import com.template.api.IntegrationTests;
-import com.template.api.auth.domain.viewmodel.IdResponse;
-import com.template.api.auth.presentation.dto.ActiveAccountDTO;
+import com.template.api.domain.viewmodel.IdResponse;
+import com.template.api.presentation.dto.ActiveAccountDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class ActivateAccountE2ETests extends IntegrationTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        var user = createFakeUser();
+        var user = createFakeUser("1");
         code = user.getVerificationCode();
     }
 

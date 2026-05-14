@@ -1,11 +1,11 @@
 package com.template.api.auth;
 
 import com.template.api.UnitTests;
-import com.template.api.auth.application.usecases.LoginCommand;
-import com.template.api.auth.application.usecases.LoginCommandHandler;
-import com.template.api.auth.domain.exceptions.ForbiddenException;
-import com.template.api.auth.domain.exceptions.NotFoundException;
-import com.template.api.auth.domain.exceptions.UnauthorizedException;
+import com.template.api.application.usecases.auth.LoginCommand;
+import com.template.api.application.usecases.auth.LoginCommandHandler;
+import com.template.api.domain.exceptions.ForbiddenException;
+import com.template.api.domain.exceptions.NotFoundException;
+import com.template.api.domain.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ public class LoginTests extends UnitTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        createFakeUser();
+        createFakeUser("1");
     }
 
     private LoginCommandHandler createHandler() {
@@ -54,7 +54,7 @@ public class LoginTests extends UnitTests {
             var command = new LoginCommand("already@example.fr", "Azerty1@");
             var handler = createHandler();
             var exception = assertThrows(UnauthorizedException.class, () -> handler.handle(command));
-            assertEquals("You are not authorized to perform this action", exception.getMessage());
+            assertEquals("Invalid credentials", exception.getMessage());
         }
 
         @Test

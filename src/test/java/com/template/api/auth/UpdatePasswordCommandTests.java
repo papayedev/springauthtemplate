@@ -1,10 +1,10 @@
 package com.template.api.auth;
 
 import com.template.api.UnitTests;
-import com.template.api.auth.application.usecases.UpdatePasswordCommand;
-import com.template.api.auth.application.usecases.UpdatePasswordCommandHandler;
-import com.template.api.auth.domain.exceptions.NotFoundException;
-import com.template.api.auth.domain.exceptions.UnauthorizedException;
+import com.template.api.application.usecases.auth.UpdatePasswordCommand;
+import com.template.api.application.usecases.auth.UpdatePasswordCommandHandler;
+import com.template.api.domain.exceptions.NotFoundException;
+import com.template.api.domain.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class UpdatePasswordCommandTests extends UnitTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        var user = createFakeUser();
+        var user = createFakeUser("1");
         verificationCode = user.getVerificationCode();
     }
 
@@ -61,7 +61,7 @@ public class UpdatePasswordCommandTests extends UnitTests {
             var command = new UpdatePasswordCommand("already@example.fr", "12334", "NewPassword123456789@");
             var handler = createHandler();
             var exception = assertThrows(UnauthorizedException.class, () -> handler.handle(command));
-            assertEquals("You are not authorized to perform this action", exception.getMessage());
+            assertEquals("Verification code is bad", exception.getMessage());
         }
 
         @Test
@@ -71,7 +71,7 @@ public class UpdatePasswordCommandTests extends UnitTests {
             var command = new UpdatePasswordCommand("already@example.fr", verificationCode, "NewPassword123456789@");
             var handler = createHandler();
             var exception = assertThrows(UnauthorizedException.class, () -> handler.handle(command));
-            assertEquals("You are not authorized to perform this action", exception.getMessage());
+            assertEquals("Verification code expired", exception.getMessage());
         }
 
         @Test

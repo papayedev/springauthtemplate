@@ -41,6 +41,6 @@ public class SpringMailer implements Mailer {
                 Map.of("code", code)
         );
 
-        send(to, "Verification code for password reset request", body);
+        send(to, "Verification code", body);
     }
 }

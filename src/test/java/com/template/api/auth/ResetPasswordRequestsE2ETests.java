@@ -1,7 +1,7 @@
 package com.template.api.auth;
 
 import com.template.api.IntegrationTests;
-import com.template.api.auth.presentation.dto.ResetPasswordRequestDTO;
+import com.template.api.presentation.dto.ResetPasswordRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ public class ResetPasswordRequestsE2ETests extends IntegrationTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        createFakeUser();
+        createFakeUser("1");
     }
 
     @Nested

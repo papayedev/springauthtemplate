@@ -1,7 +1,7 @@
 package com.template.api.auth;
 
 import com.template.api.IntegrationTests;
-import com.template.api.auth.presentation.dto.UpdatePasswordDTO;
+import com.template.api.presentation.dto.UpdatePasswordDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ public class UpdatePasswordE2ETests extends IntegrationTests {
     @BeforeEach
     public void setUp() {
         userRepository.clear();
-        var user = createFakeUser();
+        var user = createFakeUser("1");
         verificationCode = user.getVerificationCode();
     }
 
