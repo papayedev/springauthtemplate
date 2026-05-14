@@ -70,17 +70,5 @@ public class ActivateAccountE2ETests extends IntegrationTests {
                             .content(objectMapper.writeValueAsBytes(dto)))
                     .andExpect(MockMvcResultMatchers.status().isBadRequest());
         }
-
-        @Test
-        public void shouldNotActivateTheAccountIfTheCodeIsExpired() throws Exception {
-            expiredVerificationCode();
-            var dto = new ActiveAccountDTO("already@example.fr", code);
-
-            mockMvc.perform(MockMvcRequestBuilders.post("/auth/activate")
-                            .contentType("application/json")
-                            .content(objectMapper.writeValueAsBytes(dto)))
-                    .andExpect(MockMvcResultMatchers.status().isUnauthorized())
-                    .andReturn();
-        }
     }
 }

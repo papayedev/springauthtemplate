@@ -86,4 +86,21 @@ public class IntegrationTests {
         return new LoggedInUserViewModel(null, null, jwtService.generateAccessToken(user), jwtService.generateRefreshToken(user));
     }
 
+    protected String createJwt() {
+        var user = userRepository.findById("1").orElse(null);
+        if (user == null) {
+            user = new User("1", "already@example.fr", "", null);
+            userRepository.save(user);
+        }
+        return "Bearer " + jwtService.generateAccessToken(user);
+    }
+
+    protected String createJwt(String userId) {
+        var user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            user = new User(userId, "already@example.fr", "", null);
+            userRepository.save(user);
+        }
+        return "Bearer " + jwtService.generateAccessToken(user);
+    }
 }

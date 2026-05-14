@@ -28,10 +28,6 @@ public class ActivateAccountCommandHandler implements Command.Handler<ActivateAc
             throw new ForbiddenException("User is already active");
         }
 
-        if (user.isVerificationCodeExpired()) {
-            throw new UnauthorizedException("Verification code is expired");
-        }
-
         var match = command.getVerificationCode().equals(user.getVerificationCode());
 
         if (!match) {

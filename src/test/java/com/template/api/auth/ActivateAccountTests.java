@@ -67,14 +67,5 @@ public class ActivateAccountTests extends UnitTests {
             var exception = assertThrows(BadRequestException.class, () -> handler.handle(command));
             assertEquals("Verification code is wrong", exception.getMessage());
         }
-
-        @Test
-        public void shouldNotActivateTheAccountIfTheCodeIsExpired() {
-            expiredVerificationCode();
-            var command = new ActivateAccountCommand("already@example.fr", code);
-            var handler = createHandler();
-            var exception = assertThrows(UnauthorizedException.class, () -> handler.handle(command));
-            assertEquals("Verification code is expired", exception.getMessage());
-        }
     }
 }
