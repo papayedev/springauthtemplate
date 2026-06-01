@@ -4,6 +4,6 @@ defineProps(['url', 'name'])
 
 <template>
   <div class="logo">
-    <img :src="url" :alt="name">
+    <v-img width="100%" height="50%" :aspect-ratio="16 / 9" :src="url" :alt="name" cover></v-img>
   </div>
 </template>

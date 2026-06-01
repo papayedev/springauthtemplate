@@ -21,14 +21,14 @@ public class ActivateAccountCommandHandler implements Command.Handler<ActivateAc
     @Override
     public IdResponse handle(ActivateAccountCommand command) {
         apiLogger.info("Active account command received");
-        var user = userRepository.findByEmailAddress(command.getEmail())
+        var user = userRepository.findByEmailAddress(command.email())
                 .orElseThrow(() -> new NotFoundException("User"));
 
         if (user.isActive()) {
             throw new ForbiddenException("User is already active");
         }
 
-        var match = command.getVerificationCode().equals(user.getVerificationCode());
+        var match = command.verificationCode().equals(user.getVerificationCode());
 
         if (!match) {
             throw new BadRequestException("Verification code is wrong");

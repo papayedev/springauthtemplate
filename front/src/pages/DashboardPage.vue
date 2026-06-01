@@ -22,6 +22,11 @@ const checkAuth = async () => {
   }
 }
 
+const logoutAction = async () => {
+  await logout()
+  await router.push('/login')
+}
+
 onMounted(async () => {
   await checkAuth()
   setInterval(checkAuth, 5000)
@@ -29,6 +34,29 @@ onMounted(async () => {
 
 onUnmounted(() => clearInterval(interval))
 </script>
+
 <template>
-  <h1>{{ user.role }}</h1>
+  <v-layout class="h-screen rounded rounded-md border">
+    <v-app-bar title="Application bar"></v-app-bar>
+
+    <v-main>
+      <v-container class="d-flex align-center justify-center">
+        <h1>{{ user.role }}</h1>
+      </v-container>
+    </v-main>
+
+    <v-bottom-navigation grow>
+      <v-btn to="/" value="dashboard">
+        <v-icon>mdi-home</v-icon>
+
+        <span>Dashboard</span>
+      </v-btn>
+
+      <v-btn @click="logoutAction" value="logout">
+        <v-icon>mdi-logout</v-icon>
+
+        <span>Logout</span>
+      </v-btn>
+    </v-bottom-navigation>
+  </v-layout>
 </template>

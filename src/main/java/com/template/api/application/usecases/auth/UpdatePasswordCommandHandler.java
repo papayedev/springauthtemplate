@@ -27,7 +27,7 @@ public class UpdatePasswordCommandHandler implements Command.Handler<UpdatePassw
     public VoidResponse handle(UpdatePasswordCommand updatePasswordCommand) {
         apiLogger.info("Update Password Request");
 
-        final var user = userRepository.findByEmailAddress(updatePasswordCommand.getEmail())
+        final var user = userRepository.findByEmailAddress(updatePasswordCommand.email())
                 .orElseThrow(() -> new NotFoundException("User"));
 
         if (!user.isActive()) {
@@ -42,9 +42,9 @@ public class UpdatePasswordCommandHandler implements Command.Handler<UpdatePassw
             throw new UnauthorizedException("Verification code expired");
         }
 
-        var password = new Password(updatePasswordCommand.getPassword(), null);
+        var password = new Password(updatePasswordCommand.password(), null);
 
-        if (Objects.equals(user.getVerificationCode(), updatePasswordCommand.getVerificationCode())) {
+        if (Objects.equals(user.getVerificationCode(), updatePasswordCommand.verificationCode())) {
             user.resetPassword(passwordHasher.hash(password.getClearPassword()));
             userRepository.save(user);
             apiLogger.info("Password updated");

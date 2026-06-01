@@ -33,12 +33,12 @@ public class RegisterTests extends UnitTests {
             assertNotNull(response.getId());
             var user = userRepository.findById(response.getId());
             assertTrue(user.isPresent());
-            assertEquals(command.getEmailAddress(), user.get().getEmailAddress());
-            assertNotEquals(command.getPassword(), user.get().getPassword());
+            assertEquals(command.emailAddress(), user.get().getEmailAddress());
+            assertNotEquals(command.emailAddress(), user.get().getPassword());
             assertNotNull(user.get().getVerificationCode());
             assertFalse(user.get().isActive());
 
-            verify(mailer, times(1)).sendVerificationCode(command.getEmailAddress(), user.get().getVerificationCode());
+            verify(mailer, times(1)).sendVerificationCode(command.emailAddress(), user.get().getVerificationCode());
         }
     }
 

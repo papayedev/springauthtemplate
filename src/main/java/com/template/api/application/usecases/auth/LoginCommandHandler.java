@@ -30,11 +30,11 @@ public class LoginCommandHandler implements Command.Handler<LoginCommand, Logged
     public LoggedInUserViewModel handle(LoginCommand loginCommand) {
         apiLogger.info("Login command received");
         var user = this.userRepository
-                .findByEmailAddress(loginCommand.getEmailAddress())
+                .findByEmailAddress(loginCommand.emailAddress())
                 .orElseThrow(() -> new NotFoundException("User"));
 
         var match = this.passwordHasher.match(
-                loginCommand.getPassword(),
+                loginCommand.password(),
                 user.getPassword()
         );
 

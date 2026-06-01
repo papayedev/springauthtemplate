@@ -49,11 +49,11 @@ public class RegisterCommandHandler implements Command.Handler<RegisterCommand, 
     @Override
     public IdResponse handle(RegisterCommand registerCommand) {
         apiLogger.info("Register command received");
-        var maybeUser = userRepository.findByEmailAddress(registerCommand.getEmailAddress());
+        var maybeUser = userRepository.findByEmailAddress(registerCommand.emailAddress());
         if (maybeUser.isPresent()) {
             throw new UnauthorizedException("User already exist");
         }
-        var user = generateUser(registerCommand.getEmailAddress(), registerCommand.getPassword());
+        var user = generateUser(registerCommand.emailAddress(), registerCommand.password());
         sendVerificationCode(user);
         apiLogger.info("New verification code generated");
         return new IdResponse(user.getId());

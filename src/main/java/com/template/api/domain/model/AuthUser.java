@@ -1,7 +1,5 @@
 package com.template.api.domain.model;
 
-import com.template.api.domain.valueobject.Role;
-
 public class AuthUser {
     private String id;
     private String emailAddress;

@@ -1,10 +1,23 @@
 <script setup>
 import Logo from '@/components/Logo.vue'
-import Alert from '@/components/Alert.vue'
 import { useAuthStore } from '@/stores/authStore.js'
 import { storeToRefs } from 'pinia'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import router from '@/router/index.js'
+
+const loading = ref(false)
+
+const rules = {
+  required: (value) => !!value || 'Required.',
+  email: (value) => {
+    const pattern =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return pattern.test(value) || 'Invalid email.'
+  },
+  code: (value) => {
+    return value.length > 5 || 'Verification code must be at least 5 characters'
+  },
+}
 
 const form = reactive({
   email: '',
@@ -25,23 +38,37 @@ const verificationAction = async () => {
 </script>
 
 <template>
-  <div class="container fluid" style="margin-top: 15%; margin-bottom: 10%">
-    <Alert v-if="error" status="error">{{ error }}</Alert>
-    <h1>Vérification d'email</h1>
-    <div class="grid">
-      <Logo
-        name="sample"
-        url="https://t4.ftcdn.net/jpg/01/43/42/83/360_F_143428338_gcxw3Jcd0tJpkvvb53pfEztwtU9sxsgT.jpg"
-      />
-      <div class="form">
+  <v-container>
+    <h1 class="mt-4 mb-4 text-center">Vérification d'email</h1>
+    <v-alert class="mt-4 mb-4" :text="error" title="Errors" type="error" v-if="error"></v-alert>
+    <v-row>
+      <v-col cols="12" md="6">
+        <Logo
+          name="sample"
+          url="https://t4.ftcdn.net/jpg/01/43/42/83/360_F_143428338_gcxw3Jcd0tJpkvvb53pfEztwtU9sxsgT.jpg"
+        />
+      </v-col>
+      <v-col cols="12" md="6">
         <form @submit.prevent.stop>
-          <label for="email">Adresse mail</label>
-          <input v-model="form.email" type="email" id="email" name="email" placeholder="Email" />
-          <label for="code">Code de vérification</label>
-          <input v-model="form.code" type="password" id="code" name="code" placeholder="******" />
-          <input type="submit" value="Activer" @click="verificationAction" />
+          <v-text-field
+            prepend-inner-icon="mdi-email-outline"
+            v-model="form.email"
+            label="Email"
+            :rules="[rules.required, rules.email]"
+            required
+          ></v-text-field>
+          <v-text-field
+            prepend-inner-icon="mdi-code-array"
+            v-model="form.code"
+            label="Verification code"
+            :rules="[rules.required, rules.code]"
+            required
+          ></v-text-field>
+          <v-btn :disabled="loading" :loading="loading" block @click="verificationAction"
+            >Validate</v-btn
+          >
         </form>
-      </div>
-    </div>
-  </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>

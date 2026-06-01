@@ -24,7 +24,7 @@ public class ResetPasswordRequestCommandHandler implements Command.Handler<Reset
     @Override
     public VoidResponse handle(ResetPasswordRequestCommand resetPasswordRequestCommand) {
         apiLogger.info("Reset Password Request");
-        final String email = resetPasswordRequestCommand.getEmail();
+        final String email = resetPasswordRequestCommand.email();
 
         final var maybeUser = userRepository.findByEmailAddress(email)
                 .orElseThrow(() -> new NotFoundException("User"));
